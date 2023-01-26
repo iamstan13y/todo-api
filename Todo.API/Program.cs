@@ -9,4 +9,11 @@ var app = builder.Build();
 
 ///app.UseHttpsRedirection();
 
+app.MapGet("api/todo", async (AppDbContext context) =>
+{
+    var items = await context.ToDos.ToListAsync();
+
+    return Results.Ok(items);
+});
+
 app.Run();
