@@ -25,4 +25,17 @@ app.MapPost("api/todo", async (AppDbContext context, ToDo toDo) =>
     return Results.Created($"api/todo/{toDo.Id}", toDo);
 });
 
+app.MapPut("api/todo/{id}", async (AppDbContext context, int id, ToDo toDo) =>
+{
+    var todoModel = await context.ToDos.FindAsync(id);
+    if (todoModel == null) return Results.NotFound();
+
+    todoModel.Name = toDo.Name;
+
+    //await context.Update(todoModel);
+    await context.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
 app.Run();
